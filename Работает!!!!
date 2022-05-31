@@ -1,0 +1,20 @@
+def Posimvol(text, key):
+    ost_dlina = len(text) % len(key)
+    text += ((len(key) - ost_dlina) % len(key)) * '\0'
+    gotovo = ""
+    ost_text = ""
+    if len(key) < len(text):
+        ost_text = text[len(text)-len(key):]
+        ost_text = Posimvol(ost_text,key)
+    for i in range(len(text)):
+        c = 0
+        for j in key:
+            if int(j) == i and text[c] != "\0":
+                if gotovo != "":
+                    while gotovo[-1] == "\0":
+                        gotovo = gotovo[:-1]
+                gotovo += text[c]
+                break
+            c += 1
+    gotovo += ost_text 
+    return gotovo
