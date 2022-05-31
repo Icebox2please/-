@@ -1,0 +1,55 @@
+def Posimvol(key, text):
+    new_text = ["1" * len(text)]
+
+    if len(key) == len(text):
+        j = 0
+        for i in key:
+            new_text[int(i)] += text[j]
+            j += 1
+        return ''.join(new_text)
+    elif len(key) < len(text):
+        ost_len = len(text) % len(key)
+        text += ((len(key) - ost_len) % len(key)) * '\0'
+        c = 0
+        gotovo = ""
+        while len(text) > c:
+            text1 = text[c:c + len(key)]
+            print(text1)
+            j = 0
+            print(new_text[0])
+            for i in key:
+
+                new_text[int(i)].append(text1[j])
+                j += 1
+            gotovo += new_text
+            c += len(key)
+            print(new_text)
+        return gotovo
+
+
+
+
+
+
+
+
+
+
+
+def norm_key(key):
+    for k in key:
+        if not k.isdigit() or len(k) > 1:
+            return False
+    return True
+print('Выберите: шифрование - 1, расшифрование - 2')
+vid = int(input())
+if vid != 1 and vid != 2:
+    print('Вы ввели некорректные данные')
+key = input('Введите ключ, например "1032"):\n')
+while not norm_key(key):
+    key = input('Пожалуйста, введите корректное значение, например "1032"):\n').split(' ')
+
+print('Введите сообщение')
+text = input()
+
+print(Posimvol(key, text))
