@@ -1,0 +1,85 @@
+def Posimvol(text, key):
+    ost_dlina = len(text) % len(key)
+    text += ((len(key) - ost_dlina) % len(key)) * '\0'
+    gotovo = ""
+    ost_text = ""
+    if len(key) < len(text):
+        ost_text = text[len(text)-len(key):]
+        ost_text = Posimvol(ost_text,key)
+    for i in range(len(text)):
+        c = 0
+        for j in key:
+            if int(j) == i and text[c] != "\0":
+                if gotovo != "":
+                    while gotovo[-1] == "\0":
+                        gotovo = gotovo[:-1]
+                gotovo += text[c]
+                break
+            c += 1
+    gotovo += ost_text
+    return gotovo
+
+def Gruppi(text, key, group_len):
+    if group_len == "1":
+        vottak = Posimvol(text, key)
+    text += (len(key) * int(group_len) - len(text)) * '\0'
+    text_kucha = []
+    for i in range(0, len(text), int(group_len)):
+        text_kucha.append(text[i:i + int(group_len)])
+    vottak = Posimvol(text_kucha, key)
+    return vottak
+
+def Slova(text, key):
+    text = text.split(" ")
+    ost_dlina = len(text) % len(key)
+    text += ((len(key) - ost_dlina) % len(key)) * '\0'
+    gotovo = ""
+    probel = " "
+    ost_text = ""
+    if len(key) < len(text):
+        ost_text = text[len(text)-len(key):]
+        ost_text = Posimvol(ost_text, key)
+    for i in range(len(text)):
+        c = 0
+        for j in key:
+            if int(j) == i and text[c] != "\0":
+                if gotovo != "":
+                    while gotovo[-1] == "\0":
+                        gotovo = gotovo[:-1]
+                gotovo += text[c] + probel
+                break
+            c += 1
+    gotovo += ost_text
+    return gotovo
+
+def valkey(key):
+    for k in key:
+        if not k.isdigit() or len(k) > 1:
+            return False
+    return True
+
+print("Выберите, что нужно сделать:")
+print("Шифрование- 1  Расшифрование - 2")
+mode = input()
+while mode not in ("1","2"):
+    mode = input("Неправильно")
+print("Выберите Вид шифрования: \nПосимвольно - 1  Группами символов - 2  Слова - 3")
+vid = input()
+while vid not in ("123"):
+    vid = input("Неправильно")
+if vid == "2":
+    group_len = input("Введите длинну групп\n ")
+    while not group_len.isdigit():
+        group_len = input('Введите корректное значение: ')
+key = input('Введите ключ, используя пробел между символами\n').split(' ')
+while not valkey(key):
+    key = input('Введите корректное значение\n').split(' ')
+
+text = input("Введите текст:\n")
+if vid == "1":
+    result = Posimvol(text, key)
+if vid == "2":
+    result = Gruppi(text, key, group_len)
+if vid == "3":
+    result = Slova(text, key)
+print('Вот зашиврованное сообщение (x_x):', result)
